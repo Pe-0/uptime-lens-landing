@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UptimeLens (demo concept) — Website monitoring landing page</title>
+<meta name="description" content="UptimeLens is a fictional demo concept: a sample landing page for a website-monitoring SaaS. All stats and signup flows are simulated UI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #071410;
+  --panel: #0c1f19;
+  --panel-2: #0a1a15;
+  --border: #173a2e;
+  --text: #e9f5ef;
+  --muted: #8fae9f;
+  --accent: #2fd48c;
+  --accent-dark: #1fa96c;
+  --amber: #f2b44b;
+  --radius: 16px;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
+.wrap { width: min(1120px, 92%); margin-inline: auto; }
+h1, h2, h3 { line-height: 1.3; letter-spacing: -.01em; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--sans); font-weight: 600; font-size: .97rem;
+  padding: 13px 26px; border-radius: 12px; border: 1.5px solid transparent;
+  cursor: pointer; text-decoration: none; transition: .25s;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--accent); color: #052018; box-shadow: 0 12px 28px -10px rgba(47,212,140,.45); }
+.btn-primary:hover { background: var(--accent-dark); color: #fff; transform: translateY(-2px); }
+.btn-ghost { border-color: var(--border); color: var(--text); background: transparent; }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.btn.small { padding: 9px 19px; font-size: .87rem; }
+
+/* ===== Nav ===== */
+.nav { position: fixed; inset-inline: 0; top: 0; z-index: 100; padding: 15px 0; transition: background .3s, box-shadow .3s; }
+.nav.scrolled { background: rgba(7,20,16,.88); backdrop-filter: blur(12px); box-shadow: 0 8px 28px -14px rgba(0,0,0,.6); }
+.nav-inner { display: flex; align-items: center; gap: 26px; }
+.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); font-weight: 800; font-size: 1.15rem; }
+.brand-dot { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), #18a0c8); display: grid; place-items: center; }
+.brand-dot svg { width: 17px; height: 17px; }
+.nav-links { display: flex; gap: 4px; margin-inline-start: auto; }
+.nav-links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: .93rem; padding: 8px 14px; border-radius: 9px; transition: .2s; }
+.nav-links a:hover { color: var(--text); background: var(--panel); }
+.burger { display: none; background: none; border: 1px solid var(--border); border-radius: 9px; color: var(--text); padding: 7px 11px; cursor: pointer; font-size: 1rem; }
+
+/* ===== Hero ===== */
+.hero { position: relative; padding: 168px 0 90px; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background:
+    radial-gradient(600px 340px at 78% 8%, rgba(47,212,140,.13), transparent 65%),
+    radial-gradient(500px 300px at 12% 30%, rgba(24,160,200,.1), transparent 65%);
+}
+.hero-inner { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 600;
+  color: var(--accent); background: rgba(47,212,140,.1); border: 1px solid rgba(47,212,140,.3);
+  padding: 7px 16px; border-radius: 99px; margin-bottom: 22px;
+}
+.pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1.8s ease-out infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(47,212,140,.5); } 70% { box-shadow: 0 0 0 9px rgba(47,212,140,0); } 100% { box-shadow: 0 0 0 0 rgba(47,212,140,0); } }
+.hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.3rem); font-weight: 800; margin-bottom: 18px; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p.sub { color: var(--muted); font-size: 1.08rem; max-width: 480px; margin-bottom: 30px; }
+.hero-cta { display: flex; gap: 13px; flex-wrap: wrap; margin-bottom: 40px; }
+.hero-proof { display: flex; gap: 30px; flex-wrap: wrap; }
+.hero-proof b { display: block; font-size: 1.35rem; color: var(--accent); font-weight: 800; }
+.hero-proof span { color: var(--muted); font-size: .83rem; }
+
+/* Dashboard mockup */
+.dash {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 20px;
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); overflow: hidden;
+}
+.dash-bar { display: flex; align-items: center; gap: 7px; padding: 13px 16px; border-bottom: 1px solid var(--border); }
+.dash-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--border); }
+.dash-bar i:nth-child(1) { background: #e05a6d; } .dash-bar i:nth-child(2) { background: var(--amber); } .dash-bar i:nth-child(3) { background: var(--accent); }
+.dash-bar span { margin-inline-start: 8px; color: var(--muted); font-size: .78rem; font-family: var(--mono); }
+.dash-body { padding: 18px; display: grid; gap: 12px; }
+.mon-row { display: grid; grid-template-columns: 10px 1fr auto auto; gap: 12px; align-items: center; background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 15px; }
+.mon-dot { width: 9px; height: 9px; border-radius: 50%; }
+.mon-dot.up { background: var(--accent); }
+.mon-dot.down { background: #e05a6d; animation: pulse 1.4s ease-out infinite; }
+.mon-name { font-family: var(--mono); font-size: .83rem; }
+.mon-name small { display: block; color: var(--muted); font-size: .72rem; }
+.mon-pct { font-family: var(--mono); font-size: .83rem; color: var(--accent); }
+.mon-pct.bad { color: #e05a6d; }
+.mon-tag { font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; }
+.mon-tag.ok { background: rgba(47,212,140,.13); color: var(--accent); }
+.mon-tag.bad { background: rgba(224,90,109,.13); color: #e05a6d; }
+.spark { display: flex; align-items: flex-end; gap: 4px; height: 46px; padding: 0 2px; }
+.spark i { flex: 1; background: rgba(47,212,140,.35); border-radius: 3px 3px 0 0; min-height: 15%; }
+.spark i.hot { background: var(--accent); }
+
+/* ===== Sections ===== */
+.section { padding: 92px 0; }
+.section.alt { background: var(--panel-2); }
+.section-head { text-align: center; max-width: 560px; margin: 0 auto 50px; }
+.section-head p { color: var(--muted); margin-top: 10px; }
+.eyebrow { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); background: rgba(47,212,140,.1); padding: 6px 15px; border-radius: 99px; margin-bottom: 14px; }
+
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feature { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 23px; transition: transform .3s, border-color .3s; }
+.feature:hover { transform: translateY(-5px); border-color: rgba(47,212,140,.45); }
+.feature svg { width: 30px; height: 30px; color: var(--accent); margin-bottom: 15px; }
+.feature h3 { font-size: 1.06rem; margin-bottom: 8px; }
+.feature p { color: var(--muted); font-size: .92rem; }
+
+/* steps */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: step; }
+.step { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px 24px; }
+.step::before {
+  counter-increment: step; content: counter(step, decimal-leading-zero);
+  font-family: var(--mono); font-size: 2rem; font-weight: 600; color: rgba(47,212,140,.35);
+  display: block; margin-bottom: 12px;
+}
+.step h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.step p { color: var(--muted); font-size: .92rem; }
+
+/* pricing */
+.billing-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 42px; color: var(--muted); font-size: .93rem; font-weight: 600; }
+.billing-toggle .on { color: var(--text); }
+.switch { width: 52px; height: 28px; border-radius: 99px; background: var(--panel); border: 1px solid var(--border); position: relative; cursor: pointer; transition: .25s; }
+.switch::after { content: ""; position: absolute; top: 3px; inset-inline-start: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); transition: .25s; }
+.switch.yearly::after { transform: translateX(24px); }
+.save-tag { font-size: .72rem; font-weight: 700; color: var(--accent); background: rgba(47,212,140,.12); padding: 3px 10px; border-radius: 99px; }
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+.plan { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 26px; display: flex; flex-direction: column; transition: transform .3s, border-color .3s; }
+.plan:hover { transform: translateY(-5px); }
+.plan.popular { border-color: var(--accent); position: relative; box-shadow: 0 24px 50px -22px rgba(47,212,140,.35); }
+.plan-flag { position: absolute; top: -13px; inset-inline-start: 50%; transform: translateX(50%); background: var(--accent); color: #052018; font-size: .72rem; font-weight: 800; padding: 4px 14px; border-radius: 99px; }
+.plan h3 { font-size: 1.12rem; }
+.plan .price { font-size: 2.3rem; font-weight: 800; margin: 12px 0 4px; }
+.plan .price small { font-size: .9rem; color: var(--muted); font-weight: 500; }
+.plan .per { color: var(--muted); font-size: .83rem; margin-bottom: 20px; }
+.plan ul { list-style: none; display: grid; gap: 10px; margin-bottom: 26px; flex: 1; }
+.plan li { display: flex; gap: 10px; color: var(--muted); font-size: .91rem; }
+.plan li::before { content: "✓"; color: var(--accent); font-weight: 800; }
+.plan .btn { width: 100%; }
+
+/* faq */
+.faq { max-width: 720px; margin-inline: auto; display: grid; gap: 12px; }
+.faq-item { background: var(--panel); border: 1px solid var(--border); border-radius: 13px; overflow: hidden; }
+.faq-q {
+  width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  background: none; border: 0; color: var(--text); font-family: var(--sans); font-size: .98rem; font-weight: 600;
+  padding: 18px 20px; cursor: pointer; text-align: start;
+}
+.faq-q svg { width: 17px; height: 17px; flex-shrink: 0; color: var(--accent); transition: transform .3s; }
+.faq-item.open .faq-q svg { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.faq-a p { color: var(--muted); font-size: .92rem; padding: 0 20px 18px; }
+
+/* cta */
+.cta-band {
+  background: linear-gradient(120deg, rgba(47,212,140,.14), rgba(24,160,200,.1));
+  border: 1px solid rgba(47,212,140,.3); border-radius: 24px;
+  text-align: center; padding: 64px 30px;
+}
+.cta-band h2 { font-size: 1.9rem; margin-bottom: 12px; }
+.cta-band p { color: var(--muted); margin-bottom: 28px; }
+
+/* footer */
+footer { border-top: 1px solid var(--border); padding: 34px 0; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+.foot p { color: var(--muted); font-size: .85rem; }
+.foot-links { display: flex; gap: 20px; }
+.foot-links a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
+.foot-links a:hover { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .features, .steps, .plans { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+  .plan.popular { order: -1; }
+}
+@media (max-width: 640px) {
+  .nav-links {
+    position: fixed; top: 60px; inset-inline: 4%; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 10px;
+    opacity: 0; visibility: hidden; transform: translateY(-10px); transition: .3s;
+  }
+  .nav-links.open { opacity: 1; visibility: visible; transform: none; }
+  .nav-links a { padding: 12px 14px; }
+  .burger { display: block; margin-inline-start: auto; }
+  .nav .btn { display: none; }
+  .section { padding: 66px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#052018" stroke-width="2.4" stroke-linecap="round"><path d="M2.5 12h4l2.5-7 4 14 3-9 1.8 2h3.7"/></svg></span>
+      UptimeLens
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#pricing" class="btn btn-primary small">Start free</a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="hero-badge"><span class="pulse-dot"></span> Demo concept · landing page sample</span>
+      <h1>Know your site is down <em>before your users do.</em></h1>
+      <p class="sub">UptimeLens checks your websites and APIs every 30 seconds from 6 regions, and alerts you on email, Slack or WhatsApp within seconds — not after the complaints start.</p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn-primary">Start monitoring free</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <div class="hero-proof">
+        <div><b>30s</b><span>check interval</span></div>
+        <div><b>6</b><span>global regions</span></div>
+        <div><b>99.98%</b><span>example uptime stat</span></div>
+      </div>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:14px;">All figures on this page are illustrative — UptimeLens is a fictional product, not a live service.</p>
+    </div>
+    <div class="dash" aria-hidden="true">
+      <div class="dash-bar"><i></i><i></i><i></i><span>uptimelens.app/monitors · simulated UI</span></div>
+      <div class="dash-body">
+        <div class="spark"><i style="height:35%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:70%"></i><i style="height:60%"></i><i class="hot" style="height:88%"></i><i style="height:66%"></i><i class="hot" style="height:95%"></i><i style="height:58%"></i><i style="height:74%"></i><i class="hot" style="height:100%"></i><i style="height:63%"></i></div>
+        <div class="mon-row"><span class="mon-dot up"></span><span class="mon-name">api.myshop.com<small>GET /health · 182ms</small></span><span class="mon-pct">99.99%</span><span class="mon-tag ok">UP</span></div>
+        <div class="mon-row"><span class="mon-dot up"></span><span class="mon-name">myshop.com<small>HTTPS · 240ms</small></span><span class="mon-pct">99.97%</span><span class="mon-tag ok">UP</span></div>
+        <div class="mon-row"><span class="mon-dot down"></span><span class="mon-name">staging.myshop.com<small>timeout after 10s</small></span><span class="mon-pct bad">96.40%</span><span class="mon-tag bad">DOWN</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Features ===== -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Features</span>
+      <h2>Everything you need, nothing you don't</h2>
+      <p>Built for small teams who want monitoring that just works — no agents, no YAML, no PhD.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3.2 2"/></svg>
+        <h3>30-second checks</h3><p>HTTP(S), keyword and ping monitors from 6 regions, with false-positive protection — we confirm from 2 regions before alerting.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10 19a2.2 2.2 0 0 0 4 0"/></svg>
+        <h3>Instant alerts</h3><p>Email, Slack, Discord, WhatsApp and webhooks. Escalation rules so the right person gets woken up, not the whole team.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2.5"/><path d="M8 21h8M12 17v4M7.5 12l2.5-2.5 2 2 3.5-3.5"/></svg>
+        <h3>Public status pages</h3><p>A beautiful status page for your customers in one click, on your own subdomain. Incidents post themselves.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 3l7 3.5v5c0 4.4-3 8.2-7 9.5-4-1.3-7-5.1-7-9.5v-5L12 3z"/><path d="M9 12l2 2 4-4.5"/></svg>
+        <h3>SSL & domain expiry</h3><p>We watch your certificates and domain renewals too, and warn you 30, 14 and 3 days before anything expires.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+        <h3>Response-time analytics</h3><p>P50/P95 latency graphs per region. Spot the slow endpoint before it becomes the down endpoint.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 10l-2 2 2 2M15.5 10l2 2-2 2M13 8.5l-2 7"/></svg>
+        <h3>Developer-friendly API</h3><p>Create monitors, pull incidents and mute alerts from a clean REST API. Full OpenAPI spec included.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== How ===== -->
+<section class="section alt" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Live in under two minutes</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Add a URL</h3><p>Paste your website or API endpoint. Pick a check interval and regions. That's the whole setup.</p></div>
+      <div class="step"><h3>We watch it</h3><p>UptimeLens probes it around the clock, tracks response times, SSL, and keyword presence.</p></div>
+      <div class="step"><h3>You get alerted</h3><p>The second a check fails from two regions, you're notified on the channels you chose. Recovery alerts too.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Pricing ===== -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Pricing</span>
+      <h2>Simple pricing that scales with you</h2>
+      <p>Start free forever. Upgrade when you grow. <span style="opacity:.75;">(Example plans — the signup buttons are decorative.)</span></p>
+    </div>
+    <div class="billing-toggle">
+      <span id="lblMonthly" class="on">Monthly</span>
+      <div class="switch" id="billSwitch" role="switch" aria-checked="false" tabindex="0"></div>
+      <span id="lblYearly">Yearly <span class="save-tag">save 20%</span></span>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>Starter</h3>
+        <div class="price" data-m="$0" data-y="$0">$0<small>/mo</small></div>
+        <div class="per">free forever</div>
+        <ul>
+          <li>5 monitors</li>
+          <li>5-minute checks</li>
+          <li>Email alerts</li>
+          <li>1 status page</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Start free</a>
+      </div>
+      <div class="plan popular">
+        <span class="plan-flag">MOST POPULAR</span>
+        <h3>Pro</h3>
+        <div class="price" data-m="$9" data-y="$7">$9<small>/mo</small></div>
+        <div class="per" data-m="billed monthly" data-y="billed yearly">billed monthly</div>
+        <ul>
+          <li>50 monitors</li>
+          <li>30-second checks</li>
+          <li>Slack, Discord & WhatsApp alerts</li>
+          <li>SSL & domain expiry watches</li>
+          <li>3 status pages with your domain</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Start 14-day trial</a>
+      </div>
+      <div class="plan">
+        <h3>Team</h3>
+        <div class="price" data-m="$24" data-y="$19">$24<small>/mo</small></div>
+        <div class="per" data-m="billed monthly" data-y="billed yearly">billed monthly</div>
+        <ul>
+          <li>200 monitors</li>
+          <li>Escalation rules & on-call rotation</li>
+          <li>Full API access</li>
+          <li>Unlimited status pages</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Contact sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section alt" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q">Do I need to install anything on my server?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>No. UptimeLens monitors your site externally, exactly the way your visitors reach it. There's nothing to install, no agent, and no code changes.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do you avoid false alarms?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>Every failed check is re-run immediately from a second region in another network. You only get alerted if both confirm the failure — a single flaky route never wakes you up.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I monitor APIs, not just websites?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>Yes. You can send custom headers and payloads, check for keywords or JSON fields in the response, and set expected status codes per monitor.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is the free plan really free?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>Yes — 5 monitors with 5-minute checks, forever, no credit card required. Upgrade only if you need faster checks or more monitors.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="section">
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Your next outage will happen.<br>Be the first to know.</h2>
+      <p>Set up your first monitor in two minutes — free, no credit card.</p>
+      <a href="#pricing" class="btn btn-primary">Start monitoring free</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a href="#top" class="brand"><span class="brand-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#052018" stroke-width="2.4" stroke-linecap="round"><path d="M2.5 12h4l2.5-7 4 14 3-9 1.8 2h3.7"/></svg></span>UptimeLens</a>
+    <p>© <span id="year"></span> UptimeLens — a fictional demo concept (landing page sample) by Peter Zakaria. All stats, metrics and signup flows on this page are simulated UI, not a live service.</p>
+    <div class="foot-links"><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+// Sticky nav
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// Mobile menu
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// Pricing monthly/yearly toggle
+const sw = document.getElementById('billSwitch');
+function setBilling(yearly) {
+  sw.classList.toggle('yearly', yearly);
+  sw.setAttribute('aria-checked', yearly);
+  document.getElementById('lblMonthly').classList.toggle('on', !yearly);
+  document.getElementById('lblYearly').classList.toggle('on', yearly);
+  document.querySelectorAll('.plan .price').forEach(p => {
+    p.innerHTML = (yearly ? p.dataset.y : p.dataset.m) + '<small>/mo</small>';
+  });
+  document.querySelectorAll('.plan .per').forEach(p => {
+    if (p.dataset.m) p.textContent = yearly ? p.dataset.y : p.dataset.m;
+  });
+}
+sw.addEventListener('click', () => setBilling(!sw.classList.contains('yearly')));
+sw.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setBilling(!sw.classList.contains('yearly')); } });
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', () => {
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o => { o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null; });
+    if (!open) { item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+  });
+});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
